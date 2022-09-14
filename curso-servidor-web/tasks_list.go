@@ -71,4 +71,12 @@ func main() {
 	my_tasksLists.deleteFromList(1)
 
 	fmt.Printf("%+v\n", my_tasksLists.tasks)
+
+	for i := 0; i < len(my_tasksLists.tasks); i++ {
+		fmt.Println("Index", i, "Name:", my_tasksLists.tasks[i].name)
+	}
+
+	for index, task := range my_tasksLists.tasks {
+		fmt.Println("Index", index, "Name:", task.name)
+	}
 }
