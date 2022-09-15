@@ -20,6 +20,21 @@ func (my_list *tasksList) deleteFromList(taskIndex int) {
 	my_list.tasks = append(my_list.tasks[:taskIndex], my_list.tasks[taskIndex+1:]...)
 }
 
+func (my_list *tasksList) printList() {
+	for _, task := range my_list.tasks {
+		fmt.Println(task.name)
+		fmt.Println(task.description)
+	}
+}
+
+func (my_list *tasksList) printListCompletedItems() {
+	for _, task := range my_list.tasks {
+		if task.completed {
+			fmt.Println(task.name)
+		}
+	}
+}
+
 func (my_task *task) markAsComplete() {
 	my_task.completed = true
 }
@@ -79,4 +94,9 @@ func main() {
 	for index, task := range my_tasksLists.tasks {
 		fmt.Println("Index", index, "Name:", task.name)
 	}
+
+	my_tasksLists.printList()
+
+	fmt.Println("Completed tasks:")
+	my_tasksLists.printListCompletedItems()
 }
