@@ -99,4 +99,38 @@ func main() {
 
 	fmt.Println("Completed tasks:")
 	my_tasksLists.printListCompletedItems()
+
+	tasksMap := make(map[string]*tasksList)
+	tasksMap["Joaquin"] = my_tasksLists
+
+	fmt.Println(tasksMap)
+
+	my_task4 := &task{
+		name:        "Continue learning Linux",
+		description: "It's really interesting",
+	}
+
+	my_task5 := &task{
+		name:        "Continue learning Astrobilogy",
+		description: "It's really interesting",
+	}
+
+	new_tasksLists := &tasksList{
+		tasks: []*task{
+			my_task4, my_task5,
+		},
+	}
+
+	tasksMap["Friend1"] = new_tasksLists
+
+	fmt.Println(tasksMap)
+
+	fmt.Println("My List")
+	fmt.Println(tasksMap["Joaquin"].tasks)
+
+	fmt.Println("My friend's list")
+	fmt.Println(tasksMap["Friend1"].tasks)
+
+	tasksMap["Joaquin"].printList()
+	tasksMap["Friend1"].printList()
 }
