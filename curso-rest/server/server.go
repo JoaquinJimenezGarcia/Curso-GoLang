@@ -7,6 +7,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
+
 	//"github.com/gorilla/websocket"
 	"jjgdevelopment.com/go/rest-ws/database"
 	"jjgdevelopment.com/go/rest-ws/repository"
@@ -64,6 +66,8 @@ func (broker *Broker) Start(binder func(server Server, router *mux.Router)) {
 	broker.router = mux.NewRouter()
 	binder(broker, broker.router)
 
+	handler := cors.Default().Handler(broker.router)
+
 	repo, err := database.NewPostgresRepository(broker.config.DatabaseURL)
 	if err != nil {
 		log.Fatal(err)
@@ -75,7 +79,7 @@ func (broker *Broker) Start(binder func(server Server, router *mux.Router)) {
 
 	log.Println("Starting server on port", broker.Config().Port)
 
-	if err := http.ListenAndServe(broker.config.Port, broker.router); err != nil {
+	if err := http.ListenAndServe(broker.config.Port, handler); err != nil {
 		log.Fatal("[ERROR] Error counted on ", err)
 	}
 }
