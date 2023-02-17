@@ -36,16 +36,18 @@ func main() {
 }
 
 func BindRoutes(server server.Server, router *mux.Router) {
-	router.Use(middleware.CheckAuthMiddleware(server))
+	api := router.PathPrefix("/api/v1").Subrouter()
+
+	api.Use(middleware.CheckAuthMiddleware(server))
 
 	router.HandleFunc("/", handlers.HomeHandler(server)).Methods("GET")
 	router.HandleFunc("/signup", handlers.SignUpHandler(server)).Methods("POST")
 	router.HandleFunc("/login", handlers.LoginHandler(server)).Methods("POST")
-	router.HandleFunc("/me", handlers.MeHandler(server)).Methods("GET")
-	router.HandleFunc("/posts", handlers.InsertPostHandler(server)).Methods("POST")
+	api.HandleFunc("/me", handlers.MeHandler(server)).Methods("GET")
+	api.HandleFunc("/posts", handlers.InsertPostHandler(server)).Methods("POST")
 	router.HandleFunc("/posts/{id}", handlers.GetPostByIdHandler(server)).Methods("GET")
-	router.HandleFunc("/posts/{id}", handlers.UpdatePostHandler(server)).Methods("PUT")
-	router.HandleFunc("/posts/{id}", handlers.DeletePostHandler(server)).Methods("DELETE")
+	api.HandleFunc("/posts/{id}", handlers.UpdatePostHandler(server)).Methods("PUT")
+	api.HandleFunc("/posts/{id}", handlers.DeletePostHandler(server)).Methods("DELETE")
 	router.HandleFunc("/posts", handlers.ListPostHandler(server)).Methods("GET")
 	router.HandleFunc("/ws", server.Hub().HandleWebSocket)
 }
