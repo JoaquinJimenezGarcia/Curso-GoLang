@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
+	//"github.com/gorilla/websocket"
 	"github.com/joho/godotenv"
 	"jjgdevelopment.com/go/rest-ws/handlers"
 	"jjgdevelopment.com/go/rest-ws/middleware"
@@ -46,4 +47,5 @@ func BindRoutes(server server.Server, router *mux.Router) {
 	router.HandleFunc("/posts/{id}", handlers.UpdatePostHandler(server)).Methods("PUT")
 	router.HandleFunc("/posts/{id}", handlers.DeletePostHandler(server)).Methods("DELETE")
 	router.HandleFunc("/posts", handlers.ListPostHandler(server)).Methods("GET")
+	router.HandleFunc("/ws", server.Hub().HandleWebSocket)
 }
